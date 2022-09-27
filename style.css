@@ -25,7 +25,11 @@ body{
     justify-content: center;
 }
 .cell{
-    width: 30px;
-    margin: 30px;
-    height: 30px;
+    background-image: url();
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 50px;
+    margin: 25px;
+    height: 50px;
 }

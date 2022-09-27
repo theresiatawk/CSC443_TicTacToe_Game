@@ -1,8 +1,16 @@
+let player = 0;
 const allCells = document.querySelectorAll(".cell");
-console.log(allCells);
 
 for (let i = 0; i < allCells.length; i++) {
   allCells[i].addEventListener("click", function () {
-    console.log("You clicked:", this.innerText);
+    if (player == 0){
+        this.style.backgroundImage = "url(./Assets/red.png)";
+        player = 1;
+    }
+    else{
+        this.style.backgroundImage = "url(./Assets/yellow.png)";
+        player = 0;
+    }
+    
   });
 }
