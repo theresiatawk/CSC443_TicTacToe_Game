@@ -1,0 +1,17 @@
+.parent-container{
+
+}
+.flex-container{
+    display: flex;
+    flex-direction: column;
+
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.cell{
+    width: 100px;
+    margin: 10px;
+    height: 100px;
+}
