@@ -14,8 +14,16 @@ const winning_states = [
 ];
 const allCells = document.querySelectorAll(".cell");
 
-function resetGame(){
-
+function resetGame() {
+  counter = 0;
+  player = 0;
+  game_active = true;
+  for (let i = 0; i < 9; i++) {
+    game_state[i] = -1;
+  }
+  for (let i = 0; i < 9; i++) {
+    allCells[i].backgroundImage = "url()";
+  }
 }
 
 function playMode() {
@@ -33,7 +41,7 @@ function playMode() {
     for (let win_state of winning_states) {
       //Check if someone won
       if (
-        (game_state[win_state[0]] == game_state[win_state[1]]) &&
+        game_state[win_state[0]] == game_state[win_state[1]] &&
         game_state[win_state[1]] == game_state[win_state[2]] &&
         game_state[win_state[0]] != -1
       ) {
@@ -47,8 +55,8 @@ function playMode() {
         }
       }
     }
-    if(counter == 9){
-      console.log("It's a tie.")
+    if (counter == 9) {
+      console.log("It's a tie.");
     }
   }
 }
