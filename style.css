@@ -4,14 +4,13 @@
 } */
 body{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 .flex-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     background-image: url(./Assets/board.png);
     background-size: contain;
     background-position: center;
@@ -32,4 +31,10 @@ body{
     width: 50px;
     margin: 25px;
     height: 50px;
+}
+.reset-button{
+    display:none;
+}
+.game-state{
+    
 }

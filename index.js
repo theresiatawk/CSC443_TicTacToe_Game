@@ -12,18 +12,20 @@ const winning_states = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-const allCells = document.querySelectorAll(".cell");
+const all_cells = document.querySelectorAll(".cell");
+const reset_btn = document.getElementById("reset");
+
 
 function resetGame() {
+  console.log("I enter");
   counter = 0;
   player = 0;
   game_active = true;
   for (let i = 0; i < 9; i++) {
     game_state[i] = -1;
+    all_cells[i].style.backgroundImage = "url()";
   }
-  for (let i = 0; i < 9; i++) {
-    allCells[i].backgroundImage = "url()";
-  }
+  console.log(game_state);
 }
 
 function playMode() {
@@ -49,18 +51,22 @@ function playMode() {
         if (player == 1) {
           console.log("Red has won.");
           game_active = false;
+          reset_btn.style.display = "block";
         } else {
           console.log("Yellow has won.");
           game_active = false;
+          reset_btn.style.display = "block";
         }
       }
     }
-    if (counter == 9) {
+    if (counter == 9 && game_active) {
       console.log("It's a tie.");
+      reset_btn.style.display = "block";
     }
   }
 }
 
-for (let i = 0; i < allCells.length; i++) {
-  allCells[i].addEventListener("click", playMode);
+for (let i = 0; i < all_cells.length; i++) {
+  all_cells[i].addEventListener("click", playMode);
 }
+reset_btn.addEventListener("click", resetGame);
