@@ -1,4 +1,4 @@
-let player = 0;
+let player = 0; // player = 0:Red  1: yellow -1:Empty 
 let counter = 0;
 let game_active = true;
 let game_state = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -26,7 +26,12 @@ for (let i = 0; i < allCells.length; i++) {
         this.style.backgroundImage = "url(./Assets/yellow.png)";
         player = 0;
       }
-    
+      for(let win_state of winning_states){
+        if(game_state[win_state[0]] == game_state[win_state[1]] == game_state[win_state[2]] 
+           && game_state[win_state[0]] != -1){
+          // Someone won
+        }
+      }
     }
   });
 }
