@@ -41,37 +41,43 @@ function playMode() {
       this.style.backgroundImage = "url(./Assets/yellow.png)";
       player = 0;
     }
-    for (let win_state of winning_states) {
-      //Check if someone won
-      if (
-        game_state[win_state[0]] == game_state[win_state[1]] &&
-        game_state[win_state[1]] == game_state[win_state[2]] &&
-        game_state[win_state[0]] != -1
-      ) {
-        // Check who won
-        if (player == 1) {
-          state.style.color = "red";
-          state.innerText = "Red has Won!";
-          game_active = false;
-          reset_btn.style.display = "block";
-        } else {
-          state.style.color = "red";
-          state.innerText = "Yellow has Won!";
-          game_active = false;
-          reset_btn.style.display = "block";
-        }
-      }
-    }
-    if (counter == 9 && game_active) {
-      console.log("It's a tie.");
-      state.style.color = "red";
-      state.innerText = "It's a tie.";
-      reset_btn.style.display = "block";
-    }
+    checkForEndGame();
   }
 }
+function checkForEndGame(){
 
-function emptyCells() {
+  for (let win_state of winning_states) {
+    //Check if someone won
+    if (
+      game_state[win_state[0]] == game_state[win_state[1]] &&
+      game_state[win_state[1]] == game_state[win_state[2]] &&
+      game_state[win_state[0]] != -1
+    ) {
+      // Check who won
+      if (player == 1) {
+        state.style.color = "red";
+        state.innerText = "Red has Won!";
+        game_active = false;
+        reset_btn.style.display = "block";
+      } else {
+        state.style.color = "red";
+        state.innerText = "Yellow has Won!";
+        game_active = false;
+        reset_btn.style.display = "block";
+      }
+      return true;
+    }
+  }
+  if (counter == 9 && game_active) {
+    console.log("It's a tie.");
+    state.style.color = "red";
+    state.innerText = "It's a tie.";
+    reset_btn.style.display = "block";
+    return true;
+  }
+  return false;
+}
+function getEmptyCells() {
   let availableCells = [];
   for (let i = 0; i < game_state.length; i++){
     if (game_state[i] == -1){
