@@ -21,7 +21,7 @@ function resetGame() {
   player = 0;
   game_active = true;
   state.style.color = "black";
-  state.innerText = "Enjoy the process!";
+  state.innerText = "Enjoy the Process!";
   for (let i = 0; i < 9; i++) {
     game_state[i] = -1;
     all_cells[i].style.backgroundImage = "url()";
@@ -71,7 +71,18 @@ function playMode() {
   }
 }
 
+function emptyCells() {
+  let counter = 0;
+  for (let i = 0; i < game_state.length; i++){
+    if (game_state[i] == -1){
+      counter++
+    }
+  }
+  return counter;
+}
+
 for (let i = 0; i < all_cells.length; i++) {
   all_cells[i].addEventListener("click", playMode);
 }
 reset_btn.addEventListener("click", resetGame);
+
