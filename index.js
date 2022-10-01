@@ -72,13 +72,13 @@ function playMode() {
 }
 
 function emptyCells() {
-  let counter = 0;
+  let availableCells = [];
   for (let i = 0; i < game_state.length; i++){
     if (game_state[i] == -1){
-      counter++
+      availableCells.push(i);
     }
   }
-  return counter;
+  return availableCells;
 }
 
 for (let i = 0; i < all_cells.length; i++) {
