@@ -1,4 +1,4 @@
-let player = 0; // player = 0:Red  1: yellow -1:Empty
+let player = 0; // player = 0:human player  1: computer player -1:Empty
 let counter = 0;
 let game_active = true;
 let game_state = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -41,11 +41,11 @@ function playMode() {
       this.style.backgroundImage = "url(./Assets/yellow.png)";
       player = 0;
     }
-    checkForEndGame();
+    checkForWinner();
   }
 }
-function checkForEndGame(){
-
+function checkForWinner(){
+  let winner;
   for (let win_state of winning_states) {
     //Check if someone won
     if (
@@ -59,13 +59,14 @@ function checkForEndGame(){
         state.innerText = "Red has Won!";
         game_active = false;
         reset_btn.style.display = "block";
+        winner = 0;
       } else {
         state.style.color = "red";
         state.innerText = "Yellow has Won!";
         game_active = false;
         reset_btn.style.display = "block";
+        winner = 1;
       }
-      return true;
     }
   }
   if (counter == 9 && game_active) {
@@ -73,9 +74,8 @@ function checkForEndGame(){
     state.style.color = "red";
     state.innerText = "It's a tie.";
     reset_btn.style.display = "block";
-    return true;
   }
-  return false;
+  return winner;
 }
 function getEmptyCells() {
   let availableCells = [];
@@ -85,6 +85,57 @@ function getEmptyCells() {
     }
   }
   return availableCells;
+}
+
+function minimax(game_state, player) {
+	const availableCells = getEmptyCells();
+
+	if (checkForWinner == 0) {
+		return {score: -10};
+	} else if (checkForWinner == 1) {
+		return {score: 10};
+	} else if (availableCells.length === 0) {
+		return {score: 0};
+	}
+	const moves = [];
+	for (let i = 0; i < availableCells.length; i++) {
+		const move = {};
+		move.index = game_state[availableCells[i]];
+		game_state[availableCells[i]] = player;
+
+		if (player == 1) {
+			const result = minimax(game_state, 0);
+			move.score = result.score;
+		} else {
+			const result = minimax(game_state, 1);
+			move.score = result.score;
+		}
+
+		game_state[availableCells[i]] = move.index;
+
+		moves.push(move);
+	}
+
+	let bestMove;
+	if(player === 1) {
+		let bestScore = -10000;
+		for(let i = 0; i < moves.length; i++) {
+			if (moves[i].score > bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	} else {
+		let bestScore = 10000;
+		for(let i = 0; i < moves.length; i++) {
+			if (moves[i].score < bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	}
+
+	return moves[bestMove].index;
 }
 
 for (let i = 0; i < all_cells.length; i++) {
