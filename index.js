@@ -1,8 +1,6 @@
-let player = 0; // player = 0:human player  1: computer player -1:Empty
-let counter = 0;
-let game_active = true;
-let game_state = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
-let game_state_minimax = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
+var game_state;
+const user_player = 'X';
+const computer_Player = 'O';
 const winning_states = [
   [0, 1, 2],
   [3, 4, 5],
@@ -16,20 +14,28 @@ const winning_states = [
 const all_cells = document.querySelectorAll(".cell");
 const reset_btn = document.getElementById("reset");
 const state = document.getElementById("state");
+startGame();
 
-function resetGame() {
-  counter = 0;
-  player = 0;
-  game_active = true;
+function startGame() {
   state.style.color = "black";
   state.innerText = "Enjoy the Process!";
-  for (let i = 0; i < 9; i++) {
-    game_state[i] = -1;
-    game_state_minimax[i] = -1;
-    all_cells[i].style.backgroundImage = "url()";
-  }
   reset_btn.style.display = "none";
+	game_state = Array.from(Array(9).keys());
+  for (let i = 0; i < 9; i++) {
+    all_cells[i].style.backgroundImage = "url()";
+    all_cells[i].addEventListener("click", onCellClick);
+  }	
 }
+
+function onCellClick(event) {
+
+}
+function resetGame(){
+
+}
+
+let game_state_minimax = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
+
 
 function playMode(event) {
   game_state_minimax = [...game_state];
