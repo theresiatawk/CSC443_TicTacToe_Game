@@ -1,6 +1,6 @@
 var game_state;
 const user_player = 'X';
-const computer_Player = 'O';
+const computer_player = 'O';
 const winning_states = [
   [0, 1, 2],
   [3, 4, 5],
@@ -28,8 +28,32 @@ function startGame() {
 }
 
 function onCellClick(event) {
+  if (typeof game_state[event.target.id] == 'number') {
+    const cell = document.getElementById(event.target.id);
+		game_state[event.target.id] = user_player;
+    cell.style.backgroundImage = "url(./Assets/red.png)";
+	  // let gameWon = checkWin(origBoard, player)
+	  // if (gameWon) gameOver(gameWon)
+		if (!checkWin(game_state, user_player) && !checkTie()){
+      const cell_index = bestCell();
+      const cell = document.getElementById(cell_index);
+		  game_state[cell_index] = computer_player;
+      cell.style.backgroundImage = "url(./Assets/red.png)";
+      // let gameWon = checkWin(origBoard, player)
+	    // if (gameWon) gameOver(gameWon)
+    }
+	}
+}
+function checkForWinners(playing_state, player){
 
 }
+function checkForTie(playing_state, player){
+
+}
+function getBestCell() {
+
+}
+
 function resetGame(){
 
 }
@@ -176,7 +200,7 @@ function minimax(new_game_state, player) {
   return moves[bestMove];
 }
 
-for (let i = 0; i < all_cells.length; i++) {
-  all_cells[i].addEventListener("click", playMode);
-}
-reset_btn.addEventListener("click", resetGame);
+// for (let i = 0; i < all_cells.length; i++) {
+//   all_cells[i].addEventListener("click", playMode);
+// }
+// reset_btn.addEventListener("click", resetGame);
