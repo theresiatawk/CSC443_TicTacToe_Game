@@ -32,11 +32,14 @@ function resetGame() {
 }
 
 function playMode(event) {
-  console.log(game_state)
+  game_state_minimax = [...game_state];
+  console.log("game_state"+ game_state);
+  console.log("game_state_minimax"+ game_state_minimax);
   console.log("game_state[event.target.id]: "+game_state[event.target.id])
   if (game_state[event.target.id] == -1 && game_active) {
     counter++;
     game_state[event.target.id] = player;
+    game_state_minimax[event.target.id] = player;
     player = 1;
     let cell = document.getElementById(event.target.id);
     cell.style.backgroundImage = "url(./Assets/red.png)";
@@ -67,25 +70,26 @@ function playMode(event) {
       state.innerText = "It's a tie.";
       reset_btn.style.display = "block";
     } else {
-      const bestIndex = minimax(game_state, player).index;
-      console.log("BestIndex:" +bestIndex);
-      const bestCell = document.getElementById(bestIndex);
-    console.log("Best Cell" + bestCell);
-    bestCell.style.backgroundImage = "url(./Assets/yellow.png)";
-    player = 0;
-    counter++;
+      const best_index = minimax(game_state_minimax, player).index;
+      console.log("BestIndex:" +best_index);
+      const best_cell = document.getElementById(best_index);
+      console.log("Best Cell" + best_cell);
+      game_state[best_index] = player;
+      best_cell.style.backgroundImage = "url(./Assets/yellow.png)";
+      player = 0;
+      counter++;
     }
     
   }
 }
-function checkForWinner() {
+function checkForWinner(state) {
   let winner;
   for (let win_state of winning_states) {
     //Check if someone won
     if (
-      game_state[win_state[0]] == game_state[win_state[1]] &&
-      game_state[win_state[1]] == game_state[win_state[2]] &&
-      game_state[win_state[0]] != -1
+      state[win_state[0]] == state[win_state[1]] &&
+      state[win_state[1]] == state[win_state[2]] &&
+      state[win_state[0]] != -1
     ) {
       // Check who won
       if (player == 1) {
@@ -100,10 +104,10 @@ function checkForWinner() {
   }
   return winner;
 }
-function getEmptyCells() {
+function getEmptyCells(state) {
   let availableCells = [];
-  for (let i = 0; i < game_state.length; i++) {
-    if (game_state[i] == -1) {
+  for (let i = 0; i < state.length; i++) {
+    if (state[i] == -1) {
       availableCells.push(i);
     }
   }
@@ -111,13 +115,13 @@ function getEmptyCells() {
 }
 
 function minimax(new_game_state, player) {
-  const availableCells = getEmptyCells();
-  // console.log("AvailableCells" + availableCells);
-  let result = checkForWinner();
+  const availableCells = getEmptyCells(new_game_state);
+  console.log("AvailableCells" + availableCells);
+  let winner = checkForWinner(new_game_state);
   // console.log("CheckForWinner: " + result);
-  if (checkForWinner == 0) {
+  if (winner == 0) {
     return { score: -10 };
-  } else if (checkForWinner == 1) {
+  } else if (winner == 1) {
     return { score: 10 };
   } else if (availableCells.length === 0) {
     return { score: 0 };
