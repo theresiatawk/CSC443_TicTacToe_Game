@@ -14,9 +14,12 @@ const winning_states = [
 const all_cells = document.querySelectorAll(".cell");
 const reset_btn = document.getElementById("reset");
 const state = document.getElementById("state");
+
+// Starting the game
 startGame();
 
 function startGame() {
+  // Setting the initial state of the game
   state.style.color = "black";
   state.innerText = "Enjoy the Process!";
   reset_btn.style.display = "none";
@@ -26,11 +29,14 @@ function startGame() {
     all_cells[i].addEventListener("click", onCellClick);
   }
 }
+
 function onCellClick(event) {
+  // if empty cell
   if (
     game_state[event.target.id] != "Red" &&
     game_state[event.target.id] != "Yellow"
   ) {
+    // Place Reserved for the user
     const cell = document.getElementById(event.target.id);
     game_state[event.target.id] = user_player;
     cell.style.backgroundImage = "url(./Assets/red.png)";
@@ -39,6 +45,7 @@ function onCellClick(event) {
       endGame(winner);
     }
     if (!checkForWinners(game_state, user_player) && !checkForTie()) {
+      // Getting the optimal cell and reserve it for the computer
       const cell_index = getOptimalCell();
       const cell = document.getElementById(cell_index);
       game_state[cell_index] = computer_player;
@@ -50,13 +57,8 @@ function onCellClick(event) {
     }
   }
 }
+// Function that check if a certain player is a winner or not
 function checkForWinners(playing_state, player) {
-  const plays_of_player = [];
-  for (let i = 0; i < playing_state.length; i++) {
-    if (playing_state[i] == player) {
-      plays_of_player.push(i);
-    }
-  }
   let winner = null;
   for (let win of winning_states) {
     if (
@@ -70,6 +72,7 @@ function checkForWinners(playing_state, player) {
   }
   return winner;
 }
+// Checking if no winners and the game end
 function checkForTie() {
   if (getEmptyCells().length == 0) {
     for (let i = 0; i < all_cells.length; i++) {
@@ -82,9 +85,11 @@ function checkForTie() {
   }
   return false;
 }
+// Function that return the best optimal index to be reserved by the computer
 function getOptimalCell() {
   return minimax(game_state, computer_player).index;
 }
+// Return an array that contain the indeces of empty cells
 function getEmptyCells() {
   const empty_cells = [];
   for (let i = 0; i < game_state.length; i++) {
@@ -94,6 +99,7 @@ function getEmptyCells() {
   }
   return empty_cells;
 }
+// Function that display the correct output (based on the winner) when the game end.
 function endGame(winner) {
   for (var i = 0; i < all_cells.length; i++) {
     all_cells[i].removeEventListener("click", onCellClick);
@@ -108,9 +114,12 @@ function endGame(winner) {
     reset_btn.style.display = "block";
   }
 }
+// Function that implement Minimax Algorithm and return an object with an index and score(hoighest one)
 function minimax(playing_state, player) {
+  //Getting the empty indexes in the game
   const available_cells = getEmptyCells();
 
+  //Checking for the terminal states(win, lose, and tie)
   if (checkForWinners(playing_state, user_player)) {
     return { score: -10 };
   } else if (checkForWinners(playing_state, computer_player)) {
@@ -119,11 +128,15 @@ function minimax(playing_state, player) {
     return { score: 0 };
   }
   const moves = [];
+  //Looping through the available cells of the game
   for (let i = 0; i < available_cells.length; i++) {
+    //Creating an object for each empty cell and storing the index of it
     const move = {};
     move.index = playing_state[available_cells[i]];
+    // Setting the current cell to the empty player
     playing_state[available_cells[i]] = player;
 
+    // Collecting the score resulted from each run
     if (player == computer_player) {
       var result = minimax(playing_state, user_player);
       move.score = result.score;
@@ -131,11 +144,13 @@ function minimax(playing_state, player) {
       var result = minimax(playing_state, computer_player);
       move.score = result.score;
     }
-
+    // Resetting the spot to empty
     playing_state[available_cells[i]] = move.index;
+
     moves.push(move);
   }
 
+  // if it is the computer's turn loop over the moves and choose the move with the highest score (Maximizing)
   let bestMove;
   if (player === computer_player) {
     let bestScore = -10000;
@@ -145,7 +160,9 @@ function minimax(playing_state, player) {
         bestMove = i;
       }
     }
-  } else {
+  }
+  // if it is the user's turn loop over the moves and choose the move with the lowest score (Minimizing)
+  else {
     let bestScore = 10000;
     for (let i = 0; i < moves.length; i++) {
       if (moves[i].score < bestScore) {
@@ -154,7 +171,7 @@ function minimax(playing_state, player) {
       }
     }
   }
-
   return moves[bestMove];
 }
+// On Click Reset the game
 reset_btn.addEventListener("click", startGame);
